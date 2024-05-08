@@ -10,5 +10,8 @@ namespace InsuranceAppAPI.Models
         public required string Password { get; set; }
         public required DateTime LastLogin { get; set; }
         public required int UserStatusId { get; set; }
+
+        public virtual required UserStatus UserStatus { get; set; }
+
     }
 }

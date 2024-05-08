@@ -12,6 +12,8 @@ namespace InsuranceAppAPI.Models
         public DbSet<CustomerPolicy> CustomerPolicies { get; set; }
         public DbSet<PolicyStatus> PolicyStatuses { get; set; }
         public DbSet<PolicyType> PolicyTypes { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserStatus> UserStatuses { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>(entity =>
@@ -32,6 +34,16 @@ namespace InsuranceAppAPI.Models
             modelBuilder.Entity<PolicyType>(entity =>
             {
                 entity.HasKey(k => k.PolicyTypeId);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(k => k.UserId);
+            });
+
+            modelBuilder.Entity<UserStatus>(entity =>
+            {
+                entity.HasKey(k => k.UserStatusId);
             });
 
             OnModelCreatingPartial(modelBuilder);
