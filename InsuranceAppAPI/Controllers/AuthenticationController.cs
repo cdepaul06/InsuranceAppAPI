@@ -24,7 +24,7 @@ namespace InsuranceAppAPI.Controllers
 
         #region Authenticate User
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<User>>> AuthenticateUser([FromBody] User user)
+        public ActionResult<IEnumerable<User>> AuthenticateUser([FromBody] User user)
         {
             var users = _context.Users.ToList();
 
@@ -33,7 +33,7 @@ namespace InsuranceAppAPI.Controllers
             if (returnUser == null)
             {
                 return NotFound();
-            } 
+            }
             else
             {
                 return Ok(returnUser);
