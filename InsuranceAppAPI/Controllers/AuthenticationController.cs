@@ -10,7 +10,7 @@ using InsuranceAppAPI.Models;
 
 namespace InsuranceAppAPI.Controllers
 {
-    [Route("api/auth/login")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -24,6 +24,7 @@ namespace InsuranceAppAPI.Controllers
 
         #region Authenticate User
         [HttpPost]
+        [Route("login")]
         public ActionResult<IEnumerable<User>> AuthenticateUser([FromBody] User user)
         {
             var users = _context.Users.ToList();
@@ -41,5 +42,22 @@ namespace InsuranceAppAPI.Controllers
         }
         #endregion
 
+        #region Authenticate Forgot Password
+        [HttpPost]
+        [Route("forgot-password")]
+        public ActionResult<IEnumerable<User>> AuthenticateForgotPassword([FromBody] User user)
+        {
+            var users = _context.Users.ToList();
+            var returnUser = users.Where(u => u.Email == user.Email).FirstOrDefault();
+            if (returnUser == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(returnUser);
+            }
+        }
+        #endregion
     }
 }
