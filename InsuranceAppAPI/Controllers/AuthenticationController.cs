@@ -42,20 +42,22 @@ namespace InsuranceAppAPI.Controllers
         }
         #endregion
 
-        #region Authenticate Forgot Password
+        #region Authenticate - Create User
         [HttpPost]
-        [Route("forgot-password")]
-        public ActionResult<IEnumerable<User>> AuthenticateForgotPassword([FromBody] User user)
+        [Route("register")]
+        public ActionResult<User> AuthenticateCreateUser([FromBody] User user)
         {
             var users = _context.Users.ToList();
             var returnUser = users.Where(u => u.Email == user.Email).FirstOrDefault();
             if (returnUser == null)
             {
-                return NotFound();
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                return Ok(user);
             }
             else
             {
-                return Ok(returnUser);
+                return NotFound();
             }
         }
         #endregion
