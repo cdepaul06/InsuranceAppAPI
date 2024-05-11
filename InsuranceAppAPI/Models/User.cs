@@ -12,7 +12,9 @@ namespace InsuranceAppAPI.Models
         public string Password { get; set; }
         public DateTime LastLogin { get; set; }
         public int UserStatusId { get; set; }
+        public int UserTypeId { get; set; }
 
         public virtual UserStatus UserStatus { get; set; }
+        public virtual UserType UserType { get; set; }
     }
 }

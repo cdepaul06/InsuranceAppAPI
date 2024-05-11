@@ -35,29 +35,13 @@ namespace InsuranceAppAPI.Controllers
             {
                 return NotFound();
             }
+            else if (returnUser.UserStatusId != 2)
+            {
+                return Unauthorized();
+            }
             else
             {
                 return Ok(returnUser);
-            }
-        }
-        #endregion
-
-        #region Authenticate - Create User
-        [HttpPost]
-        [Route("register")]
-        public ActionResult<User> AuthenticateCreateUser([FromBody] User user)
-        {
-            var users = _context.Users.ToList();
-            var returnUser = users.Where(u => u.Email == user.Email).FirstOrDefault();
-            if (returnUser == null)
-            {
-                _context.Users.Add(user);
-                _context.SaveChanges();
-                return Ok(user);
-            }
-            else
-            {
-                return NotFound();
             }
         }
         #endregion
