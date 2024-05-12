@@ -9,7 +9,7 @@ using InsuranceAppAPI.Models;
 
 namespace InsuranceAppAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/UserStatuses")]
     [ApiController]
     public class UserStatusController : ControllerBase
     {
