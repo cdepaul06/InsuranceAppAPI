@@ -13,20 +13,26 @@ namespace InsuranceAppAPI.Controllers
     [ApiController]
     public class PolicyStatusController : ControllerBase
     {
+
+        #region Initialize
         private readonly InsuranceDBContext _context;
 
         public PolicyStatusController(InsuranceDBContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region GET - PolicyStatuses
         // GET: api/PolicyStatus
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PolicyStatus>>> GetPolicyStatuses()
         {
             return await _context.PolicyStatuses.ToListAsync();
         }
+        #endregion
 
+        #region GET - PolicyStatus by ID
         // GET: api/PolicyStatus/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PolicyStatus>> GetPolicyStatus(int id)
@@ -40,7 +46,9 @@ namespace InsuranceAppAPI.Controllers
 
             return policyStatus;
         }
+        #endregion
 
+        #region PUT - PolicyStatus by ID
         // PUT: api/PolicyStatus/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -71,7 +79,9 @@ namespace InsuranceAppAPI.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region POST - PolicyStatus
         // POST: api/PolicyStatus
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -82,7 +92,9 @@ namespace InsuranceAppAPI.Controllers
 
             return CreatedAtAction("GetPolicyStatus", new { id = policyStatus.PolicyStatusId }, policyStatus);
         }
+        #endregion
 
+        #region DELETE - PolicyStatus by ID
         // DELETE: api/PolicyStatus/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePolicyStatus(int id)
@@ -98,10 +110,13 @@ namespace InsuranceAppAPI.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region Utilities
         private bool PolicyStatusExists(int id)
         {
             return _context.PolicyStatuses.Any(e => e.PolicyStatusId == id);
         }
+        #endregion
     }
 }
