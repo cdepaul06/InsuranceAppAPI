@@ -8,7 +8,6 @@ namespace InsuranceAppAPI.Models
         [Key]
         public int CustomerPolicyId { get; set; }
         public int CustomerId { get; set; }
-        public int PolicyId { get; set; } // Need to take this out
         public DateTime PolicyStartDate { get; set; }
         public DateTime PolicyEndDate { get; set; }
         public decimal PolicyPremium { get; set; }
