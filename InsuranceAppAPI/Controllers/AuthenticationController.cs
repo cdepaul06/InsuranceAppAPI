@@ -41,6 +41,9 @@ namespace InsuranceAppAPI.Controllers
             }
             else
             {
+                returnUser.LastLogin = DateTime.Now;
+                _context.Entry(returnUser).State = EntityState.Modified;
+                _context.SaveChanges();
                 return Ok(returnUser);
             }
         }
