@@ -84,16 +84,17 @@ namespace InsuranceAppAPI.Controllers
         }
 
         // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(List<int> userIds)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var usersToDelete = await _context.Users.Where(u => userIds.Contains(u.UserId)).ToListAsync();
+
+            if (usersToDelete == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.Users.RemoveRange(usersToDelete);
             await _context.SaveChangesAsync();
 
             return NoContent();
