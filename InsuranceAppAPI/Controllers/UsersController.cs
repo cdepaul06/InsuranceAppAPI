@@ -20,13 +20,16 @@ namespace InsuranceAppAPI.Controllers
             _context = context;
         }
 
+        #region GET - Users
         // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
+        #endregion
 
+        #region GET - User by ID
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
@@ -40,7 +43,9 @@ namespace InsuranceAppAPI.Controllers
 
             return user;
         }
+        #endregion
 
+        #region PUT - User by ID
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -71,7 +76,9 @@ namespace InsuranceAppAPI.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region POST - User
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -82,7 +89,9 @@ namespace InsuranceAppAPI.Controllers
 
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
+        #endregion
 
+        #region DELETE - User by ID
         // DELETE: api/Users/5
         [HttpDelete]
         public async Task<IActionResult> DeleteUser(IEnumerable<int> userIds)
@@ -99,10 +108,13 @@ namespace InsuranceAppAPI.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region Utility Functions
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.UserId == id);
         }
+        #endregion
     }
 }

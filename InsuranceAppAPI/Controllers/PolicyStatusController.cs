@@ -96,16 +96,18 @@ namespace InsuranceAppAPI.Controllers
 
         #region DELETE - PolicyStatus by ID
         // DELETE: api/PolicyStatus/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePolicyStatus(int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeletePolicyStatus(IEnumerable<int> policyStatusIds)
         {
-            var policyStatus = await _context.PolicyStatuses.FindAsync(id);
-            if (policyStatus == null)
+            
+            var policyStatusesToDelete = await _context.PolicyStatuses.Where(x => policyStatusIds.Contains(x.PolicyStatusId)).ToListAsync();
+
+            if (policyStatusesToDelete == null)
             {
                 return NotFound();
             }
 
-            _context.PolicyStatuses.Remove(policyStatus);
+            _context.PolicyStatuses.RemoveRange(policyStatusesToDelete);
             await _context.SaveChangesAsync();
 
             return NoContent();

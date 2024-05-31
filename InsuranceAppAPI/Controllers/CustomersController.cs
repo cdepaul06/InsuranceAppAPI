@@ -21,13 +21,16 @@ namespace InsuranceAppAPI.Controllers
             _context = context;
         }
 
+        #region GET - Customers
         // GET: api/Customers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
             return await _context.Customers.ToListAsync();
         }
+        #endregion
 
+        #region GET - Customer by ID
         // GET: api/Customers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
@@ -41,7 +44,9 @@ namespace InsuranceAppAPI.Controllers
 
             return customer;
         }
+        #endregion
 
+        #region PUT - Customer by ID
         // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -72,7 +77,9 @@ namespace InsuranceAppAPI.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region POST - Customer
         // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -83,26 +90,31 @@ namespace InsuranceAppAPI.Controllers
 
             return CreatedAtAction("GetCustomer", new { id = customer.CustomerId }, customer);
         }
+        #endregion
 
+        #region DELETE - Customer by ID
         // DELETE: api/Customers/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCustomer(int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCustomer(IEnumerable<int> customerIds)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
+            var customersToDelete = await _context.Customers.Where(x => customerIds.Contains(x.CustomerId)).ToListAsync();
+            if (customersToDelete == null)
             {
                 return NotFound();
             }
 
-            _context.Customers.Remove(customer);
+            _context.Customers.RemoveRange(customersToDelete);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
+        #endregion
 
+        #region Utility Functions
         private bool CustomerExists(int id)
         {
             return _context.Customers.Any(e => e.CustomerId == id);
         }
+        #endregion
     }
 }

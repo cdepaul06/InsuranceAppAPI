@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using InsuranceAppAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using InsuranceAppAPI.Models;
 
 namespace InsuranceAppAPI.Controllers
 {
@@ -20,6 +15,7 @@ namespace InsuranceAppAPI.Controllers
             _context = context;
         }
 
+        #region GET - UserTypes
         // GET: api/UserTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserType>>> GetUserTypes()
@@ -27,6 +23,9 @@ namespace InsuranceAppAPI.Controllers
             return await _context.UserTypes.ToListAsync();
         }
 
+        #endregion
+
+        #region GET - UserType by ID
         // GET: api/UserTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserType>> GetUserType(int id)
@@ -40,7 +39,9 @@ namespace InsuranceAppAPI.Controllers
 
             return userType;
         }
+        #endregion
 
+        #region PUT - UserType by ID
         // PUT: api/UserTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -71,7 +72,9 @@ namespace InsuranceAppAPI.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region POST - UserType
         // POST: api/UserTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -82,26 +85,31 @@ namespace InsuranceAppAPI.Controllers
 
             return CreatedAtAction("GetUserType", new { id = userType.UserTypeId }, userType);
         }
+        #endregion
 
+        #region DELETE - UserType by ID
         // DELETE: api/UserTypes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserType(int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUserType(IEnumerable<int> userTypeIds)
         {
-            var userType = await _context.UserTypes.FindAsync(id);
-            if (userType == null)
+            var userTypesToDelete = await _context.UserTypes.Where(x => userTypeIds.Contains(x.UserTypeId)).ToListAsync();
+            if (userTypesToDelete == null)
             {
                 return NotFound();
             }
 
-            _context.UserTypes.Remove(userType);
+            _context.UserTypes.RemoveRange(userTypesToDelete);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
+        #endregion
 
+        #region Utility Functions
         private bool UserTypeExists(int id)
         {
             return _context.UserTypes.Any(e => e.UserTypeId == id);
         }
+        #endregion
     }
 }

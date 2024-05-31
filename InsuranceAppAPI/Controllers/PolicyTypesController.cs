@@ -20,13 +20,16 @@ namespace InsuranceAppAPI.Controllers
             _context = context;
         }
 
+        #region GET - PolicyTypes
         // GET: api/PolicyTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PolicyType>>> GetPolicyTypes()
         {
             return await _context.PolicyTypes.ToListAsync();
         }
+        #endregion
 
+        #region GET - PolicyType by ID
         // GET: api/PolicyTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PolicyType>> GetPolicyType(int id)
@@ -40,7 +43,9 @@ namespace InsuranceAppAPI.Controllers
 
             return policyType;
         }
+        #endregion
 
+        #region PUT - PolicyType by ID
         // PUT: api/PolicyTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -71,7 +76,9 @@ namespace InsuranceAppAPI.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region POST - PolicyType
         // POST: api/PolicyTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -82,26 +89,31 @@ namespace InsuranceAppAPI.Controllers
 
             return CreatedAtAction("GetPolicyType", new { id = policyType.PolicyTypeId }, policyType);
         }
+        #endregion
 
+        #region DELETE - PolicyType by ID
         // DELETE: api/PolicyTypes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePolicyType(int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeletePolicyType(IEnumerable<int> policyTypeIds)
         {
-            var policyType = await _context.PolicyTypes.FindAsync(id);
-            if (policyType == null)
+            var policyTypesToDelete = await _context.PolicyTypes.Where(x => policyTypeIds.Contains(x.PolicyTypeId)).ToListAsync();
+            if (policyTypesToDelete == null)
             {
                 return NotFound();
             }
 
-            _context.PolicyTypes.Remove(policyType);
+            _context.PolicyTypes.RemoveRange(policyTypesToDelete);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
+        #endregion
 
+        #region Utility Functions
         private bool PolicyTypeExists(int id)
         {
             return _context.PolicyTypes.Any(e => e.PolicyTypeId == id);
         }
+        #endregion
     }
 }
