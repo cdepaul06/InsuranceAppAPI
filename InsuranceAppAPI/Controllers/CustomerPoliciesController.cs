@@ -87,7 +87,21 @@ namespace InsuranceAppAPI.Controllers
             _context.CustomerPolicies.Add(customerPolicy);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCustomerPolicy", new { id = customerPolicy.CustomerPolicyId }, customerPolicy);
+            var createdPolicy = await _context.CustomerPolicies.FindAsync(customerPolicy.CustomerPolicyId);
+           
+            if (createdPolicy == null)
+                {
+                    return NotFound();
+                }
+
+            // Generate a 9-digit policy number based on CustomerPolicyId and pad with zeros
+            var pn = createdPolicy.CustomerPolicyId.ToString().PadLeft(9, '0');
+            createdPolicy.PolicyNumber = pn;
+
+            _context.CustomerPolicies.Update(createdPolicy);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetCustomerPolicy", new { id = customerPolicy.CustomerPolicyId }, createdPolicy);
         }
         #endregion
 

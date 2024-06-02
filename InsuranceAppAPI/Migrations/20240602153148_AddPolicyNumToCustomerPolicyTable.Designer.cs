@@ -4,6 +4,7 @@ using InsuranceAppAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsuranceAppAPI.Migrations
 {
     [DbContext(typeof(InsuranceDBContext))]
-    partial class InsuranceDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240602153148_AddPolicyNumToCustomerPolicyTable")]
+    partial class AddPolicyNumToCustomerPolicyTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,8 +86,8 @@ namespace InsuranceAppAPI.Migrations
                     b.Property<DateTime>("PolicyEndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PolicyNumber")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PolicyNumber")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("PolicyPremium")
                         .HasColumnType("decimal(18,2)");

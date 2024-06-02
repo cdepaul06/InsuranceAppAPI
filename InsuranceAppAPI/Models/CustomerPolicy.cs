@@ -8,6 +8,7 @@ namespace InsuranceAppAPI.Models
         [Key]
         public int CustomerPolicyId { get; set; }
         public int CustomerId { get; set; }
+        public string PolicyNumber { get; set; }
         public DateTime PolicyStartDate { get; set; }
         public DateTime PolicyEndDate { get; set; }
         public decimal PolicyPremium { get; set; }
