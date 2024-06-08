@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using InsuranceAppAPI.Models;
+using InsuranceAppAPI.Services;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<InsuranceDBContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddHttpClient<VinLookupService>(options => {
+    options.BaseAddress = new Uri("https://vpic.nhtsa.dot.gov/api/");
+    options.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+});
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

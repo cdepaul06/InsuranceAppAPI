@@ -8,8 +8,13 @@ namespace InsuranceAppAPI.Models
             : base(options)
         {
         }
+
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerPolicy> CustomerPolicies { get; set; }
+        public DbSet<CustomerPolicyLine> CustomerPolicyLines { get; set; }
+        public DbSet<Automobile> Automobiles { get; set; }
+        public DbSet<Home> Homes { get; set; }
+        public DbSet<Motorcycle> Motorcycles { get; set; }
         public DbSet<PolicyStatus> PolicyStatuses { get; set; }
         public DbSet<PolicyType> PolicyTypes { get; set; }
         public DbSet<User> Users { get; set; }

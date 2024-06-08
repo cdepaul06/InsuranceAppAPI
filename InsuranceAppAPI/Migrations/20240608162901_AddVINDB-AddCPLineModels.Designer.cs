@@ -4,6 +4,7 @@ using InsuranceAppAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsuranceAppAPI.Migrations
 {
     [DbContext(typeof(InsuranceDBContext))]
-    partial class InsuranceDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240608162901_AddVINDB-AddCPLineModels")]
+    partial class AddVINDBAddCPLineModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,42 +24,6 @@ namespace InsuranceAppAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("InsuranceAppAPI.Models.Automobile", b =>
-                {
-                    b.Property<int>("AutomobileId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AutomobileId"));
-
-                    b.Property<int>("CustomerPolicyLineId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MSRP")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Make")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VIN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
-                    b.HasKey("AutomobileId");
-
-                    b.HasIndex("CustomerPolicyLineId");
-
-                    b.ToTable("Automobiles");
-                });
 
             modelBuilder.Entity("InsuranceAppAPI.Models.Customer", b =>
                 {
@@ -123,7 +90,6 @@ namespace InsuranceAppAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PolicyNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PolicyPremium")
@@ -145,96 +111,6 @@ namespace InsuranceAppAPI.Migrations
                     b.HasIndex("PolicyStatusId");
 
                     b.ToTable("CustomerPolicies");
-                });
-
-            modelBuilder.Entity("InsuranceAppAPI.Models.CustomerPolicyLine", b =>
-                {
-                    b.Property<int>("CustomerPolicyLineId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerPolicyLineId"));
-
-                    b.Property<int>("CustomerPolicyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomerPolicyLineId");
-
-                    b.HasIndex("CustomerPolicyId");
-
-                    b.ToTable("CustomerPolicyLines");
-                });
-
-            modelBuilder.Entity("InsuranceAppAPI.Models.Home", b =>
-                {
-                    b.Property<int>("HomeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HomeId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CustomerPolicyLineId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SquareFootage")
-                        .HasColumnType("int");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("YearBuilt")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Zip")
-                        .HasColumnType("int");
-
-                    b.HasKey("HomeId");
-
-                    b.HasIndex("CustomerPolicyLineId");
-
-                    b.ToTable("Homes");
-                });
-
-            modelBuilder.Entity("InsuranceAppAPI.Models.Motorcycle", b =>
-                {
-                    b.Property<int>("MotorcycleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MotorcycleId"));
-
-                    b.Property<int>("CustomerPolicyLineId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Make")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VIN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
-                    b.HasKey("MotorcycleId");
-
-                    b.HasIndex("CustomerPolicyLineId");
-
-                    b.ToTable("Motorcycles");
                 });
 
             modelBuilder.Entity("InsuranceAppAPI.Models.PolicyStatus", b =>
@@ -357,17 +233,6 @@ namespace InsuranceAppAPI.Migrations
                     b.ToTable("UserTypes");
                 });
 
-            modelBuilder.Entity("InsuranceAppAPI.Models.Automobile", b =>
-                {
-                    b.HasOne("InsuranceAppAPI.Models.CustomerPolicyLine", "CustomerPolicyLine")
-                        .WithMany("Automobiles")
-                        .HasForeignKey("CustomerPolicyLineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerPolicyLine");
-                });
-
             modelBuilder.Entity("InsuranceAppAPI.Models.CustomerPolicy", b =>
                 {
                     b.HasOne("InsuranceAppAPI.Models.Customer", "Customer")
@@ -387,39 +252,6 @@ namespace InsuranceAppAPI.Migrations
                     b.Navigation("PolicyStatus");
                 });
 
-            modelBuilder.Entity("InsuranceAppAPI.Models.CustomerPolicyLine", b =>
-                {
-                    b.HasOne("InsuranceAppAPI.Models.CustomerPolicy", "CustomerPolicy")
-                        .WithMany()
-                        .HasForeignKey("CustomerPolicyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerPolicy");
-                });
-
-            modelBuilder.Entity("InsuranceAppAPI.Models.Home", b =>
-                {
-                    b.HasOne("InsuranceAppAPI.Models.CustomerPolicyLine", "CustomerPolicyLine")
-                        .WithMany("Homes")
-                        .HasForeignKey("CustomerPolicyLineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerPolicyLine");
-                });
-
-            modelBuilder.Entity("InsuranceAppAPI.Models.Motorcycle", b =>
-                {
-                    b.HasOne("InsuranceAppAPI.Models.CustomerPolicyLine", "CustomerPolicyLine")
-                        .WithMany("Motorcycles")
-                        .HasForeignKey("CustomerPolicyLineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerPolicyLine");
-                });
-
             modelBuilder.Entity("InsuranceAppAPI.Models.User", b =>
                 {
                     b.HasOne("InsuranceAppAPI.Models.UserStatus", "UserStatus")
@@ -437,15 +269,6 @@ namespace InsuranceAppAPI.Migrations
                     b.Navigation("UserStatus");
 
                     b.Navigation("UserType");
-                });
-
-            modelBuilder.Entity("InsuranceAppAPI.Models.CustomerPolicyLine", b =>
-                {
-                    b.Navigation("Automobiles");
-
-                    b.Navigation("Homes");
-
-                    b.Navigation("Motorcycles");
                 });
 #pragma warning restore 612, 618
         }

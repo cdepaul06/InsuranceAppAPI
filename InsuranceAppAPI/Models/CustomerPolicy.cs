@@ -2,7 +2,6 @@
 
 namespace InsuranceAppAPI.Models
 {
-#nullable disable
     public class CustomerPolicy
     {
         [Key]
