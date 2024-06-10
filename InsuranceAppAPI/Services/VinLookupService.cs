@@ -4,13 +4,13 @@ namespace InsuranceAppAPI.Services
 {
     public class VinLookupService
     {
-        private readonly HttpClient client;
+        private readonly HttpClient _client;
 
         public VinLookupService(HttpClient httpClient)
         {
-            client = httpClient;
-            client.BaseAddress = new Uri("https://vpic.nhtsa.dot.gov/api/");
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _client = httpClient;
+            _client.BaseAddress = new Uri("https://vpic.nhtsa.dot.gov/api/");
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public async Task<string> VinLookup(string vin, int year)
@@ -19,7 +19,7 @@ namespace InsuranceAppAPI.Services
 
             try
             {
-                var response = await client.GetAsync(url);
+                var response = await _client.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsStringAsync();
