@@ -6,13 +6,16 @@ namespace InsuranceAppAPI.Services
     {
         private readonly HttpClient _client;
 
+        #region Initialize
         public VinLookupService(HttpClient httpClient)
         {
             _client = httpClient;
             _client.BaseAddress = new Uri("https://vpic.nhtsa.dot.gov/api/");
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
+        #endregion
 
+        #region VIN Lookup
         public async Task<string> VinLookup(string vin, int year)
         {
             string url = $"vehicles/DecodeVinValues/{vin}?format=json&modelyear={year}";
@@ -35,5 +38,6 @@ namespace InsuranceAppAPI.Services
                 return $"Exception: {e.Message}";
             }
         }
+        #endregion
     }
 }

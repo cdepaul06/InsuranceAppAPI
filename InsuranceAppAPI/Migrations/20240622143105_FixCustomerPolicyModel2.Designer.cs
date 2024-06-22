@@ -4,6 +4,7 @@ using InsuranceAppAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsuranceAppAPI.Migrations
 {
     [DbContext(typeof(InsuranceDBContext))]
-    partial class InsuranceDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240622143105_FixCustomerPolicyModel2")]
+    partial class FixCustomerPolicyModel2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,8 +162,7 @@ namespace InsuranceAppAPI.Migrations
 
                     b.HasKey("CustomerPolicyLineId");
 
-                    b.HasIndex("CustomerPolicyId")
-                        .IsUnique();
+                    b.HasIndex("CustomerPolicyId");
 
                     b.ToTable("CustomerPolicyLines");
                 });
@@ -390,8 +392,8 @@ namespace InsuranceAppAPI.Migrations
             modelBuilder.Entity("InsuranceAppAPI.Models.CustomerPolicyLine", b =>
                 {
                     b.HasOne("InsuranceAppAPI.Models.CustomerPolicy", "CustomerPolicy")
-                        .WithOne("PolicyLine")
-                        .HasForeignKey("InsuranceAppAPI.Models.CustomerPolicyLine", "CustomerPolicyId")
+                        .WithMany()
+                        .HasForeignKey("CustomerPolicyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -437,11 +439,6 @@ namespace InsuranceAppAPI.Migrations
                     b.Navigation("UserStatus");
 
                     b.Navigation("UserType");
-                });
-
-            modelBuilder.Entity("InsuranceAppAPI.Models.CustomerPolicy", b =>
-                {
-                    b.Navigation("PolicyLine");
                 });
 
             modelBuilder.Entity("InsuranceAppAPI.Models.CustomerPolicyLine", b =>

@@ -25,7 +25,7 @@ namespace InsuranceAppAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerPolicy>>> GetCustomerPolicies()
         {
-            return await _context.CustomerPolicies.ToListAsync();
+            return await _context.CustomerPolicies.Include(x => x.Customer).Include(x => x.PolicyStatus).ToListAsync();
         }
         #endregion
 
@@ -99,6 +99,27 @@ namespace InsuranceAppAPI.Controllers
             createdPolicy.PolicyNumber = pn;
 
             _context.CustomerPolicies.Update(createdPolicy);
+   
+            var customer = await _context.Customers.FindAsync(createdPolicy.CustomerId);
+            
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            createdPolicy.Customer = customer;
+
+            var policyStatus = await _context.PolicyStatuses.FindAsync(createdPolicy.PolicyStatusId);
+
+            if (policyStatus == null)
+            {
+                return NotFound();
+            }
+
+            createdPolicy.PolicyStatus = policyStatus;
+
+            _context.CustomerPolicies.Update(createdPolicy);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCustomerPolicy", new { id = customerPolicy.CustomerPolicyId }, createdPolicy);

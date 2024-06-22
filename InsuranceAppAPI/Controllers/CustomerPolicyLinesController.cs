@@ -18,19 +18,24 @@ namespace InsuranceAppAPI.Controllers
         private readonly InsuranceDBContext _context;
         private readonly VinLookupService _vinLookupService;
 
+        #region Initialize
         public CustomerPolicyLinesController(InsuranceDBContext context, VinLookupService vinLookupService)
         {
             _context = context;
             _vinLookupService = vinLookupService;   
         }
+        #endregion
 
+        #region GET CustomerPolicyLines
         // GET: api/CustomerPolicyLines
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerPolicyLine>>> GetCustomerPolicyLines()
         {
             return await _context.CustomerPolicyLines.ToListAsync();
         }
+        #endregion
 
+        #region GET CustomerPolicyLines by CustomerPolicyId
         // GET: api/CustomerPolicyLines/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CustomerPolicyLine>> GetCustomerPolicyLine(int id)
@@ -44,13 +49,17 @@ namespace InsuranceAppAPI.Controllers
 
             return customerPolicyLine;
         }
+        #endregion
 
+        #region VIN Lookup
         [HttpGet("vin/{vin}/{year}")]
         public async Task<ActionResult<string>> GetVin(string vin, int year)
         {
             return await _vinLookupService.VinLookup(vin, year);
         }
+        #endregion
 
+        #region GET CustomerPolicyLines by CustomerPolicyId
         // PUT: api/CustomerPolicyLines/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -81,7 +90,9 @@ namespace InsuranceAppAPI.Controllers
 
             return NoContent();
         }
+        #endregion
 
+        #region POST CustomerPolicyLines
         // POST: api/CustomerPolicyLines
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -92,7 +103,9 @@ namespace InsuranceAppAPI.Controllers
 
             return CreatedAtAction("GetCustomerPolicyLine", new { id = customerPolicyLine.CustomerPolicyLineId }, customerPolicyLine);
         }
+        #endregion
 
+        #region DELETE CustomerPolicyLines
         // DELETE: api/CustomerPolicyLines/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomerPolicyLine(int id)
@@ -113,5 +126,6 @@ namespace InsuranceAppAPI.Controllers
         {
             return _context.CustomerPolicyLines.Any(e => e.CustomerPolicyLineId == id);
         }
+        #endregion
     }
 }
